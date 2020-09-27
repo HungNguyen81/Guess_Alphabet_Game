@@ -1,1 +1,0 @@
-# simpleQt_game

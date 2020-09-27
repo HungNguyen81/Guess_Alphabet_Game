@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QThread>
-#include <QSignalMapper>
+//#include <QSignalMapper>
+#include "workerthread.h"
+#include <thread>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -20,16 +22,24 @@ MainWindow::MainWindow(QWidget *parent)
 //    connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
 //    timer->start(1000);
     connHandler();
-
+    connect(this, SIGNAL(colorChanged()), this, SLOT(changeColor()));
+    queue = ui->btn_00;
+    ComBtn.setText(QString(char_arr[0]));
+    ui->lbl_com->setText(ComBtn.text());
 }
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+void MainWindow::changeColor(){
+    if(queue != NULL){
+        queue->setStyleSheet("color:#000000");
+    }
+}
 void MainWindow::event_handler(int x, int y){
-    QPushButton *btn = btn_arr[x][y];
 
+    queue = btn_arr[x][y];
+//    if(queue->text() == "a") ui->lbl_score->setNum(5);
     std::random_shuffle(std::begin(char_arr), std::end(char_arr));
     func();
 
@@ -37,9 +47,13 @@ void MainWindow::event_handler(int x, int y){
 //    if(queue != NULL){
 //        queue->setStyleSheet("color:black");
 //    }
+
 //    queue = btn;
 }
 
+void MainWindow::onTimerChanged(int s){
+    ui->lbl_score->setNum(s);
+}
 
 void MainWindow::initBtnArray(){
     btn_arr[0][0] = ui->btn_00; //1
@@ -127,127 +141,131 @@ void MainWindow::func(){
 
 void MainWindow::handler_00(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(0,0);
 }
-void MainWindow::handler_01(){
+void MainWindow::handler_01(){ // Mới chỉ xử lý sự kiện tính điểm cho btn_01
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
-    event_handler(0,1);
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
+    if(QString::compare(btn->text(),ComBtn.text()) == 0)   // Chữ cái cần so sánh là U
+        ui->lbl_score->setNum(5); //Nếu btn.text = combtn.txt thi diem = 5, nguọc lại điểm = 1
+    else ui->lbl_score->setNum(1);
+    event_handler(0,1); // sau khi so sánh 2 chữ cái thì bắt đầu đảo, trộn mảng.
 }
 void MainWindow::handler_02(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
+
     event_handler(0,2);
 }
 void MainWindow::handler_03(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(0,3);
 }
 void MainWindow::handler_04(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(0,4);
 }
 void MainWindow::handler_10(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(1,0);
 }
 void MainWindow::handler_11(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(1,1);
 }
 void MainWindow::handler_12(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(1,2);
 }
 void MainWindow::handler_13(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(1,3);
 }
 void MainWindow::handler_14(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(1,4);
 }
 void MainWindow::handler_20(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(2,0);
 }
 void MainWindow::handler_21(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(2,1);
 }
 void MainWindow::handler_22(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(2,2);
 }
 void MainWindow::handler_23(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(2,3);
 }
 void MainWindow::handler_24(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(2,4);
 }
 void MainWindow::handler_30(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(3,0);
 }
 void MainWindow::handler_31(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(3,1);
 }
 void MainWindow::handler_32(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(3,2);
 }
 void MainWindow::handler_33(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(3,3);
 }
 void MainWindow::handler_34(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(3,4);
 }
 void MainWindow::handler_40(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
 event_handler(4,0);
 }
 void MainWindow::handler_41(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(4,1);
 }
 void MainWindow::handler_42(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(4,2);
 }
 void MainWindow::handler_43(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
 event_handler(4,3);
 }
 void MainWindow::handler_44(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
-    btn->setStyleSheet("color: orange");
+    btn->setStyleSheet("QPushButton::focus{color: orange;}");
     event_handler(4,4);
 }
 

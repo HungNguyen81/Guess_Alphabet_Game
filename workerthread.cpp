@@ -1,13 +1,10 @@
-
 #include "workerthread.h"
 
 
-WorkerThread::WorkerThread()
-{
-
-}
-
 void WorkerThread::run()
 {
+//    if(q != NULL){
+//        q->setStyleSheet("color:black");
+//    }
 
 }

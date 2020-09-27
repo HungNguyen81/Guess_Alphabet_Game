@@ -2,13 +2,17 @@
 #define WORKERTHREAD_H
 
 #include "mainwindow.h"
+#include <QtCore>
 
-class WorkerThread
+
+class WorkerThread : public QThread
 {
+    Q_OBJECT
+
     public:
-        WorkerThread();
         void run();
-        MainWindow *w;
+//        Ui::MainWindow *w;
+        QPushButton *q;
 };
 
 #endif // WORKERTHREAD_H

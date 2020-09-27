@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QTimer>
+#include "workerthread.h"
 //#include <QQueue>
 
 QT_BEGIN_NAMESPACE
@@ -23,6 +24,9 @@ class MainWindow : public QMainWindow
         QTimer *timer;
         void func();
         QPushButton *queue;
+        QThread *wthread;
+        QPushButton ComBtn;
+
 
     public slots:
 //        void event_handler();
@@ -52,13 +56,18 @@ class MainWindow : public QMainWindow
         void handler_42();
         void handler_43();
         void handler_44();
+        void changeColor();
+        void onTimerChanged(int);
 
+    signals:
+        void colorChanged();
     private:
         QPushButton *btn_arr[5][5];
         char char_arr[26];
         int i, k, j;
-        void event_handler(int x, int y);
+        void event_handler(int, int);
         void connHandler();
+
 
 
 };
