@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QThread>
-//#include <QSignalMapper>
-#include "workerthread.h"
 #include <thread>
 
 
@@ -10,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    score = 0;
+//    ui->lbl_score->setNum(score);  // Dòng này gây ra crash
     initBtnArray();
     k = 0; i =0; j = 0;
     for(int i = 0; i < 26; i++){
@@ -18,41 +18,37 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     func();
-//    timer = new QTimer(this);
-//    connect(timer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::update));
-//    timer->start(1000);
     connHandler();
-    connect(this, SIGNAL(colorChanged()), this, SLOT(changeColor()));
+
     queue = ui->btn_00;
     ComBtn.setText(QString(char_arr[0]));
-    ui->lbl_com->setText(ComBtn.text());
+    ui->lbl_com->setText(ComBtn.text()); // Cái này dùng cho lúc debug,
+                                         // lúc chạy thực tế có thể bỏ
 }
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-void MainWindow::changeColor(){
-    if(queue != NULL){
-        queue->setStyleSheet("color:#000000");
-    }
-}
-void MainWindow::event_handler(int x, int y){
 
+void MainWindow::event_handler(int x, int y){
     queue = btn_arr[x][y];
-//    if(queue->text() == "a") ui->lbl_score->setNum(5);
     std::random_shuffle(std::begin(char_arr), std::end(char_arr));
     func();
+}
 
-//    btn->setStyleSheet("color: red;");
-//    if(queue != NULL){
-//        queue->setStyleSheet("color:black");
-//    }
-
-//    queue = btn;
+void MainWindow::executing(QPushButton *btn){
+    if(QString::compare(btn->text(),ComBtn.text()) == 0){
+        score += 5;
+        int r = rand()%25;
+        ComBtn.setText(QString(char_arr[r]));
+        ui->lbl_com->setNum((int(char_arr[r])) - 96);  // gợi ý người chơi STT của chữ cái
+                                                       // cần đoán trong bảng chữ cái
+    }
+    ui->lbl_score->setNum(score);
 }
 
 void MainWindow::onTimerChanged(int s){
-    ui->lbl_score->setNum(s);
+//    ui->lbl_score->setNum(s);
 }
 
 void MainWindow::initBtnArray(){
@@ -142,14 +138,12 @@ void MainWindow::func(){
 void MainWindow::handler_00(){
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
     btn->setStyleSheet("QPushButton::focus{color: orange;}");
-    event_handler(0,0);
+    executing(btn); event_handler(0,0);
 }
 void MainWindow::handler_01(){ // Mới chỉ xử lý sự kiện tính điểm cho btn_01
     QPushButton *btn = qobject_cast<QPushButton *>(sender());
     btn->setStyleSheet("QPushButton::focus{color: orange;}");
-    if(QString::compare(btn->text(),ComBtn.text()) == 0)   // Chữ cái cần so sánh là U
-        ui->lbl_score->setNum(5); //Nếu btn.text = combtn.txt thi diem = 5, nguọc lại điểm = 1
-    else ui->lbl_score->setNum(1);
+    executing(btn);
     event_handler(0,1); // sau khi so sánh 2 chữ cái thì bắt đầu đảo, trộn mảng.
 }
 void MainWindow::handler_02(){
