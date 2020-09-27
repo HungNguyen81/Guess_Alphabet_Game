@@ -19,10 +19,12 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
         Ui::MainWindow *ui;
-        void initBtnArray();
+//        void initBtnArray();
         QTimer *timer;
         void func();
         QPushButton ComBtn;
+        int t;
+        bool isStart;
 
 
     public slots:
@@ -51,11 +53,12 @@ class MainWindow : public QMainWindow
         void handler_42();
         void handler_43();
         void handler_44();
+        void startGame();
 
-        void onTimerChanged(int);
+        void onTimerChanged();
 
     private:
-        QPushButton *btn_arr[5][5];
+//        QPushButton *btn_arr[5][5];
         char char_arr[26];
         int i, k, j;
         void shuffle_arr();
