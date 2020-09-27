@@ -22,7 +22,6 @@ class MainWindow : public QMainWindow
         void initBtnArray();
         QTimer *timer;
         void func();
-        QPushButton *queue;
         QPushButton ComBtn;
 
 
@@ -59,7 +58,7 @@ class MainWindow : public QMainWindow
         QPushButton *btn_arr[5][5];
         char char_arr[26];
         int i, k, j;
-        void event_handler(int, int);
+        void shuffle_arr();
         void connHandler();
         void executing(QPushButton *);
 
