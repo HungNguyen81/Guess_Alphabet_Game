@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     func();
     connHandler();
-
+    srand((int) time(0));
     int ran = rand()%25;
     ComBtn.setText(QString(char_arr[ran]));
     ui->lbl_com->setNum(int(char_arr[ran])-96);
@@ -37,6 +37,7 @@ void MainWindow::shuffle_arr(){
 void MainWindow::executing(QPushButton *btn){
     if(QString::compare(btn->text(),ComBtn.text()) == 0){
         score += 5;
+        srand((int) time(0));
         int r = rand()%25;
         shuffle_arr();
         ComBtn.setText(QString(char_arr[r]));
