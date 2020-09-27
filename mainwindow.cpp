@@ -16,9 +16,6 @@ MainWindow::MainWindow(QWidget *parent)
     for(int i = 0; i < 26; i++){
         char_arr[(i+6)%26] = char(i+97);
     }
-    t = 60;             // thời gian đếm ngược (giây), sau mỗi 1000ms timer gửi tín hiệu 1 lần,
-                        // ta sẽ xử lí tín hiệu này để giảm t đi 1 đến khi t < 0 thì dừng timer
-                        // t < 0 là vì t = 0 thì màn LCD_TIMER vẫn chưa in ra t.
 
     ui->setupUi(this);
     connect(ui->btn_start, SIGNAL(clicked()), this, SLOT(startGame()));
@@ -37,6 +34,9 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::startGame(){
+    t = 60;             // thời gian đếm ngược (giây), sau mỗi 1000ms timer gửi tín hiệu 1 lần,
+                        // ta sẽ xử lí tín hiệu này để giảm t đi 1 đến khi t < 0 thì dừng timer
+                        // t < 0 là vì t = 0 thì màn LCD_TIMER vẫn chưa in ra t.
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimerChanged()));
     timer->start(1000);                 // Bắt đầu gửi tín hiệu tới SLOT sau mỗi 1000ms
