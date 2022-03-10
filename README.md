@@ -3,5 +3,5 @@
 Give the order of letter in the alphabet, find that letter
 <hr>
 
-Capture:
+Capture: <br>
 ![ALT](https://github.com/HungNguyen81/simpleQt_game/blob/master/cap2.png?raw=true)
